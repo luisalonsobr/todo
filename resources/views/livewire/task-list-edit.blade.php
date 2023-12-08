@@ -1,14 +1,17 @@
-<div>
-        <x-slot name="header">
-            <h2 class="font-semibold text-2xl pt-8 text-white leading-tight text-center [text-shadow:_0_2px_10px_rgb(0_0_0_/_40%)]">
-                @if ($taskList)
-                {{ $taskList->title }}
-                @endif
+<div x-data="{styles: {width: $wire.percentageDone + '%'}, editingTitle:true }"
+    x-init="@this.$watch('percentageDone', value => styles.width = value + '%')">
 
-            </h2>
+    <div class="font-semibold text-2xl  text-white leading-tight text-center">
+        <input class="text-2xl text-white bg-transparent border-0 text-center mt-10 ring-0 [text-shadow:_0_2px_10px_rgb(0_0_0_/_40%)] border-solid focus:border-b-2 border-b-white focus:ring-white focus:ring-0" type="text" wire:model.live.debounce.500ms="listTitle"  >
+
+    </div>
+        <x-slot name="header">
+
+
+
         </x-slot>
 
-        <div class="py-12 mt-20">
+        <div class="py-12 mt-0">
             <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-between">
                     <div class="sub-header">
@@ -51,8 +54,7 @@
                 {{-- end create --}}
 
                 <div class="relative bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-b-lg p-3 md:p-4 lg:p-5  " >
-                    <div class="absolute w-full dark:bg-slate-950 h-1 z-20t top-0 left-0" x-data="{styles: {width: $wire.percentageDone + '%'} }"
-                         x-init="@this.$watch('percentageDone', value => styles.width = value + '%')">
+                    <div class="absolute w-full dark:bg-slate-950 h-1 z-20t top-0 left-0" >
 
                         <div class="absolute bg-green-500 h-1 z-20t top-0 left-0" :style="styles">
                         </div>

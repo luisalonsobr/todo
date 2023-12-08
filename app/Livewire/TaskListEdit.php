@@ -11,7 +11,8 @@ class TaskListEdit extends Component
 {
 
     public $taskId;
-    public $taskTitle;
+    public $listTitle;
+    public $taskTitle ='';
     public $description;
     public $taskListId;
     public $taskList;
@@ -33,8 +34,10 @@ class TaskListEdit extends Component
         $this->taskListId = $id;
         $this->taskList = $this->getList();
         $this->pending = [];
+        $this->listTitle = $this->taskList->title;
         $this->done = [];
         $this->updatePercentageDone();
+
 
     }
 
@@ -128,6 +131,17 @@ class TaskListEdit extends Component
 
     }
 
+    public function updatedListTitle($value){
+    $this->validate([
+        'listTitle' => 'required|string|max:36',
+    ]);
+
+    $taskList = TaskList::find($this->taskListId);
+    $taskList->title = $value;
+    $taskList->save();
+
+    // Further processing...
+}
     public function updatePercentageDone()
 {
     // Calculate the percentage of tasks done
