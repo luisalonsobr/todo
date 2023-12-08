@@ -1,4 +1,4 @@
-<x-app-layout>
+<div>
     <x-slot name="header">
         <h2 class="font-semibold text-2xl pt-8 text-gray-800 dark:text-gray-200 leading-tight text-center">
             {{ __('Minhas Listas') }}
@@ -36,6 +36,17 @@
             </div>
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-3 md:p-4 lg:p-5 mt-5 gap-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+                <div >
+                    <a href="/listas/criar" wire:navigate>
+                        <div class="h-40 w-full  dark:bg-slate-400 dark:border-gray-200 rounded">
+                            <div class="w-full h-full flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+                </div>
                 @foreach ($lists as $list)
                 <div>
                     <a href="/listas/edit/{{ $list->id }}" wire:navigate>
@@ -48,18 +59,7 @@
                 </div>
 
                 @endforeach
-                <div >
-                    <a href="/listas/create" wire:navigate>
-                        <div class="h-40 w-full  dark:bg-slate-400 dark:border-gray-200 rounded">
-                            <div class="w-full h-full flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                </svg>
-                            </div>
-                        </div>
-                    </a>
-                </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+</div>

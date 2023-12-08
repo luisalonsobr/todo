@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\TaskList;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class TaskListsIndex extends Component
@@ -10,14 +11,18 @@ class TaskListsIndex extends Component
     public $lists, $view, $total;
 
     function mount () {
-        $this->lists = TaskList::all();
-        $this->total = TaskList::all()->count();
+        $this->lists = Auth::user()->lists()->with('users')->get();
+        $this->total = $this->lists->count();
         $this->view = 'grid';
-        }
+    }
 
 
     public function render()
     {
-        return view('livewire.lists-list');
+        return view('livewire.task-lists-index',[
+            'lists' => $this->lists,
+            'total' => $this->total,
+            'view' => $this->view,
+        ]);
     }
 }

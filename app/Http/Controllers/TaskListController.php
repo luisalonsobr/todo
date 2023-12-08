@@ -32,7 +32,9 @@ class TaskListController extends Controller
     {
         $user = Auth::user();
         $userId = $user->id;
-        $total = TaskList::all()->count();
+        $total = TaskList::whereHas('users', function ($query) use ($userId) {
+            $query->where('users.id', $userId);
+        })->count();
         $taskList = new TaskList();
         $taskList->title = 'Lista ' . ($total + 1);
         $taskList->save();
@@ -62,11 +64,11 @@ class TaskListController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TaskList $taskList)
+    public function wireEdit(TaskList $taskList)
     {
+        return \App\Livewire\TaskListEdit::class;
 
         $list = TaskList::with(['users.tasks'])->find($taskList->id);
-
 
         return view('livewire.task-list-edit', [
             'taskList' => $list,

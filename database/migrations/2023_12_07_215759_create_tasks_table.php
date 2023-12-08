@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->unique();
             $table->uuid('task_list_id');
             $table->string('title');
-            $table->string('color');
+            $table->string('color')->nullable();
             $table->text('description')->nullable();
             $table->boolean('status')->default(false);
             $table->integer('priority')->default(0);
