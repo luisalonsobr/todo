@@ -13,6 +13,9 @@ class Task extends Model
     use Uuids;
     use SoftDeletes;
 
+    protected $table = 'tasks'; // Specify the custom table name
+
+
     protected $fillable = ['title', 'description', 'due_at', 'status'];
 
     public function taskList()
@@ -22,7 +25,7 @@ class Task extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'task_pivots');
     }
 
 }

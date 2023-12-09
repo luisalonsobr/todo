@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Task;
 use App\Models\TaskList;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\Attributes\On;
 
@@ -49,10 +50,15 @@ class TaskListEdit extends Component
         ]);
 
         $taskList = TaskList::find($this->taskListId);
-        $taskList->tasks()->create([
+
+        $task = $taskList->tasks()->create([
             'title' => $this->taskTitle,
             'description' => $this->description,
         ]);
+
+        $user = Auth::user();
+        $user->tasks()->attach($task->id);
+
 
         $this->taskTitle = '';
         $this->description = '';

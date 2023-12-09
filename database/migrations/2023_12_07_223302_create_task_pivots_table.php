@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_pivot', function (Blueprint $table) {
+        Schema::create('task_pivots', function (Blueprint $table) {
             $table->uuid('task_id');
             $table->uuid('user_id');
             $table->timestamps();

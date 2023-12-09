@@ -53,17 +53,16 @@
                 </div>
                 {{-- end create --}}
 
-                <div class="relative bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-b-lg p-3 md:p-4 lg:p-5  " >
+                <div class="relative bg-white dark:bg-gray-800 overflow-visible shadow-xl sm:rounded-b-lg p-3 md:p-4 lg:p-5  " >
                     <div class="absolute w-full dark:bg-slate-950 h-1 z-20t top-0 left-0" >
 
                         <div class="absolute bg-green-500 h-1 z-20t top-0 left-0" :style="styles">
                         </div>
                     </div>
-
                     @if ($taskList)
                     @if ($taskList->tasks->count() > 0)
                     {{-- sort --}}
-                    <div class="w-full  h-10 bg-white dark:bg-gray-800  md:rounded-t flex justify-between" >
+                    <div class="w-full  h-10 bg-white dark:bg-gray-800  md:rounded-t flex justify-between overflow-visible" >
                         <div class="text-white">
                             {{-- {{ $percentageDone  }} --}}
                         </div>
@@ -115,10 +114,10 @@
                     {{-- end sort --}}
 
                     {{-- list --}}
-                    <ul class="list-none divide-y divide-solid text-slate-900 dark:text-gray-100 " wire:transition.opacity >
+                    <ul class="list-none mt-5 divide-y divide-solid text-slate-900 dark:text-gray-100 " wire:transition.opacity >
                         @foreach ($taskList->tasks as $task)
 
-                        @livewire('task', ['task' => $task], key($task->id))
+                        @livewire('task', ['task' => $task], , key($task->id))
 
                         @endforeach
                     </ul>

@@ -33,3 +33,10 @@
 	}
 }
 
+.btn-dropdown {
+    @apply block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left w-full text-sm
+}
+
+.bottom-position {
+    transform: translateY(-100%); /* Adjust this value as needed */
+}
