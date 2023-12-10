@@ -1,28 +1,21 @@
 <div x-data="{styles: {width: $wire.percentageDone + '%'}, editingTitle:true }"
     x-init="@this.$watch('percentageDone', value => styles.width = value + '%')">
-
-    <div class="font-semibold text-2xl  text-white leading-tight text-center">
-        <input class="text-2xl text-white bg-transparent border-0 text-center mt-10 ring-0 [text-shadow:_0_2px_10px_rgb(0_0_0_/_40%)] border-solid focus:border-b-2 border-b-white focus:ring-white focus:ring-0" type="text" wire:model.live.debounce.500ms="listTitle"  >
-
-    </div>
+        <div class="font-semibold text-2xl  text-white leading-tight text-center">
+            @if ($ownsList)
+                <input class="text-2xl text-white bg-transparent border-0 text-center mt-10 ring-0 [text-shadow:_0_2px_10px_rgb(0_0_0_/_40%)] border-solid focus:border-b-2 border-b-white focus:ring-white focus:ring-0" type="text" wire:model.live.debounce.500ms="listTitle"  >
+            @else
+                <div class="text-2xl text-white bg-transparent border-0 text-center mt-10 ring-0 [text-shadow:_0_2px_10px_rgb(0_0_0_/_40%)] "  >{{ $listTitle }}</div>
+            @endif
+        </div>
         <x-slot name="header">
-
-
-
         </x-slot>
 
         <div class="py-12 mt-0">
             <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex justify-between">
-                    <div class="sub-header">
 
-                    </div>
-                    <div>
-
-                    </div>
-                </div>
 
                 {{-- create --}}
+                @if ($ownsList)
                 <div class="flex justify-center">
                     <div class="w-full max-w-xl">
                         <form wire:submit="addTask" action="">
@@ -52,6 +45,8 @@
                     <x-validation-errors class="mb-4" />
                 </div>
                 {{-- end create --}}
+                @endif
+
 
                 <div class="relative bg-white dark:bg-gray-800 overflow-visible shadow-xl sm:rounded-b-lg p-3 md:p-4 lg:p-5  " >
                     <div class="absolute w-full dark:bg-slate-950 h-1 z-20t top-0 left-0" >

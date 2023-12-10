@@ -40,18 +40,25 @@ class Task extends Component
     }
 
 
-    public function updateduserSearch($value){
-        if (!$value) {
+    public function updatedUserSearch($value){
+
             $this->resetErrorBag();
             $this->resetValidation();
-            return;
-        }
 
-        $this->searchResults = null;
 
-        $this->validate([
-            'userSearch' => 'required|email|max:36',
-        ]);
+            $this->searchResults = null;
+
+            $validatedData = $this->validate([
+                'userSearch' => 'nullable|email|max:36',
+            ]);
+
+            if (!$validatedData['userSearch']) {
+                $this->searchResults = null;
+                return;
+            }
+
+            // If validation passes and there are no errors, reset the error bag.
+
 
         //search users by email like
         $taskId = $this->task->id;
@@ -59,9 +66,10 @@ class Task extends Component
         ->whereDoesntHave('tasks', function ($query) use ($taskId) {
             $query->where('tasks.id', $taskId);
         })->get();
+        $this->dispatch('task-updated', $taskId)->to(TaskListEdit::class);
     }
 
-    public function addUserToTask($taskId, $userId) {
+    public function attachUserToTask($taskId, $userId) {
         $task = ModelsTask::find($taskId);
 
         if ($task) {
@@ -71,6 +79,31 @@ class Task extends Component
             // Optional: return some kind of response or confirmation
             $task = ModelsTask::with('users')->find($taskId);
             $this->users = $task->users;
+            $this->userSearch = null;
+            $this->searchResults = null;
+            $this->render();
+            $this->dispatch('user-added', $taskId)->to(TaskListEdit::class);
+            return "User added to task successfully.";
+
+        }
+
+        // Optional: handle the case where the task doesn't exist
+        return "Task not found.";
+    }
+    public function detachUserFromTask($taskId, $userId) {
+        $task = ModelsTask::find($taskId);
+
+        if ($task) {
+            // Attach the user to the task
+            $task->users()->detach($userId);
+
+            // Optional: return some kind of response or confirmation
+            $task = ModelsTask::with('users')->find($taskId);
+            $this->users = $task->users;
+            $this->userSearch = null;
+            $this->searchResults = null;
+            $this->hydrate();
+            $this->render();
             $this->dispatch('user-added', $taskId);
             return "User added to task successfully.";
 
@@ -83,6 +116,11 @@ class Task extends Component
     public function hydrate()
     {
         $this->resetErrorBag();
+        $this->resetValidation();
+    }
+
+    public function updated($value)
+    {
         $this->resetValidation();
     }
 

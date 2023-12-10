@@ -4,10 +4,18 @@
     <div>
 
         @teleport('body')
-        <div x-show="modal" class="absolute z-30 top-0 left-0 w-screen h-screen bg-opacity-20 bg-black flex items-center justify-center"  >
-                <div class="bg-white divide-y dark:bg-slate-950 dark:text-gray-100 w-full mx-auto max-w-md shadow-xl">
-                    <div class="p-5 w-full">
+        <div x-show="modal" class="absolute z-30 top-0 left-0 w-screen h-screen bg-opacity-20 bg-slate-950  flex items-center justify-center"  >
+                <div class="bg-white divide-y dark:bg-slate-950 dark:text-gray-100 w-full mx-auto max-w-md shadow-xl border border-solid border-gray-300">
+                    <div class="p-5 w-full relative">
                         Compartilhar
+                        <div class="absolute right-5 top-3">
+                            <button @click="modal = ! modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            </button>
+
+                        </div>
                     </div>
                     <div class=" w-full">
 
@@ -27,7 +35,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                                   </svg>
                                             </div>
-                                            <input type="text"  wire:model.live.debounce.500ms="userSearch" name="taskTitle" id="taskTitle" class="block w-full h-14 text-lg bg-white dark:bg-slate-900 text-gray-900  dark:text-gray-100  rounded-t-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="E-mail do usuário">
+                                            <input type="text" autocomplete="off" wire:model.live.debounce.500ms="userSearch" name="taskTitle" id="taskTitle" class="block -mt-1 w-full h-14 text-lg bg-white dark:bg-slate-900 text-gray-900  dark:text-gray-100   border-none pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="E-mail do usuário">
                                         </div>
                                     </div>
 
@@ -35,16 +43,16 @@
                                     <ul class="w-full">
                                     @if ($this->searchResults->count() > 0)
                                     @foreach ($this->searchResults as $user )
-                                        <li class="dark:text-gray-100 w-full  text-lg p-2 text-left flex flex-nowrap justify-between">
+                                        <li class="dark:text-gray-100 w-full  text-base p-2 text-left flex flex-nowrap justify-between">
                                             <div class="divide-y">
-                                                {{ $user->email }}
+                                                {{ $user->name }}
                                                 <br>
-                                                <div class="text-sm ">
-                                                    {{ $user->name }}
+                                                <div class="text-base ">
+                                                    {{ $user->email }}
                                                 </div>
                                             </div>
                                             <div class="text-sm ">
-                                                <button class="btn-dafault" wire:click="addUserToTask('{{ $task->id }}', '{{ $user->id }}')" >
+                                                <button class="btn-dafault" wire:click="attachUserToTask('{{ $task->id }}', '{{ $user->id }}')" >
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                                       </svg>
@@ -76,8 +84,22 @@
                         Usuários:
                         <ul>
                             @foreach ($users as $user)
-                        <li class="my-2 dark:text-gray-100 divide-y">
-                            {{ $user->name }}
+                        <li class="my-2 dark:text-gray-100 relative group">
+                            <div class="divide-y py-2">
+                                {{ $user->name }} ({{ $user->email }})
+                                <br>
+
+                            </div>
+                            @if ($users->count() > 1)
+                            <div class="absolute right-2 top-0.5 ">
+                                <button wire:click="detachUserFromTask('{{ $task->id }}', '{{ $user->id }}')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </button>
+
+                            </div>
+                            @endif
                         </li>
                         @endforeach
                     </ul>

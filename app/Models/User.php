@@ -71,7 +71,7 @@ class User extends Authenticatable
 
     public function tasks()
     {
-        return $this->belongsToMany(Task::class, 'task_pivots'); // Replace 'task_pivot' with your actual pivot table name
+        return $this->belongsToMany(Task::class, 'task_pivots')->withTimestamps();
     }
 
 }

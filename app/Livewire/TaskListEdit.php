@@ -13,12 +13,12 @@ class TaskListEdit extends Component
 
     public $taskId;
     public $listTitle;
+    public $ownsList;
+    public $ownsTasks;
     public $taskTitle ='';
     public $description;
     public $taskListId;
     public $taskList;
-    public $pending;
-    public $done;
     public $percentageDone = 0;
     public $orderBy = 'status';
     public $sortDirection = 'asc'; // Sort direction
@@ -32,11 +32,16 @@ class TaskListEdit extends Component
 
     public function mount($id)
     {
+        //Check if list of any task belongs to user:
+
         $this->taskListId = $id;
+        $this->ownsList = $this->isUserAttachedToList();
+        $this->ownsTasks = $this->isUserAttachedToTasks();
+        if (!$this->ownsList && !$this->ownsTasks) {
+            return redirect()->route('task-lists.index');
+        }
         $this->taskList = $this->getList();
-        $this->pending = [];
         $this->listTitle = $this->taskList->title;
-        $this->done = [];
         $this->updatePercentageDone();
 
 
@@ -77,7 +82,14 @@ class TaskListEdit extends Component
 
     public function getList()
     {
-        $list = TaskList::with(['users.tasks'])->find($this->taskListId);
+        $userId = Auth::id(); // Get the current user's ID
+
+        // Load the list with tasks that are only attached to the current user
+        $list = TaskList::with(['tasks' => function ($query) use ($userId) {
+            $query->whereHas('users', function ($subQuery) use ($userId) {
+                $subQuery->where('id', $userId);
+            });
+        }])->find($this->taskListId);
 
         switch ($this->orderBy) {
             case 'titleAz':
@@ -128,13 +140,12 @@ class TaskListEdit extends Component
         return $list;
     }
 
-
+    #[On('user-added')]
     #[On('task-updated')]
     public function updated() {
         $this->taskList = $this->getList();
         $this->updatePercentageDone();
         $this->render();
-
     }
 
     public function updatedListTitle($value){
@@ -177,4 +188,28 @@ class TaskListEdit extends Component
     {
         return view('livewire.task-list-edit');
     }
+
+    private function isUserAttachedToList() {
+        $this->taskList = $this->getList();
+        $userId = Auth::id(); // Get the current user's ID
+        $isUserAttachedToList = $this->taskList->users->contains('id', $userId);
+        if ($isUserAttachedToList) {
+            return true;
+        }
+
+    }
+    private function isUserAttachedToTasks() {
+        $this->taskList = $this->getList();
+        $userId = Auth::id();
+        $isUserAttachedToTasks = $this->taskList->tasks->contains(function ($task) use ($userId) {
+            return $task->users->contains('id', $userId);
+        });
+
+        if ($isUserAttachedToTasks) {
+            return true;
+        }
+
+    }
 }
+
+

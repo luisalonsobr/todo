@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('list_pivots', function (Blueprint $table) {
-            $table->uuid('list_id');
+            $table->uuid('task_list_id');
             $table->uuid('user_id');
             $table->timestamps();
             $table->softDeletes();
