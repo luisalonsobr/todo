@@ -1,7 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Redirect;
+Route::domain(adminUrl())->name('admin.')->group(function () {
+    Route::get('/www', function () {
+        return view('welcome');
+    });
+});
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,9 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
 
 // Route::middleware([
 //     'auth:sanctum',

@@ -10,8 +10,19 @@ class Authenticate extends Middleware
     /**
      * Get the path the user should be redirected to when they are not authenticated.
      */
-    protected function redirectTo(Request $request): ?string
+    protected function redirectTo($request)
     {
-        return $request->expectsJson() ? null : route('login');
+        Request::macro('subdomain', function () {
+            return current(explode('.', $this->getHost()));
+        });
+
+
+        if (($request->subdomain() === 'admin' || $request->route()->getPrefix() === '/admin') && ! $request->expectsJson()) {
+            return route('admin.login.index');
+        } else if (($request->subdomain() === 'adminsand' || $request->route()->getPrefix() === '/admin') && ! $request->expectsJson()) {
+            return route('admin.login.index');
+        } else if (! $request->expectsJson()) {
+            return route('login');
+        }
     }
 }

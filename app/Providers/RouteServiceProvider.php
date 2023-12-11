@@ -17,6 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
+    public const ADMIN = '/dashboard';
     public const HOME = '/listas';
 
     /**
@@ -29,6 +30,10 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
+            Route::middleware('web')
+            ->domain(adminUrl())
+            ->group(base_path('routes/admin.php'));
+
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));

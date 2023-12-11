@@ -21,6 +21,10 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+        if (request()->isAdmin()) {
+            config(['fortify.domain' => adminUrl()]);
+            config(['fortify.guard' => 'admin']);
+        }
     }
 
     /**
