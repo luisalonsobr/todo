@@ -29,7 +29,6 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    // Route::auto('/listas', TaskListController::class, ['name' => 'task-lists']);
     Route::get('/listas/criar', [TaskListController::class, 'create'])->name('task-lists.creat');
     Route::get('/listas', TaskListsIndex::class)->name('task-lists.index');
     Route::get('/listas/edit/{id}', TaskListEdit::class)->name('task-lists.edit');
