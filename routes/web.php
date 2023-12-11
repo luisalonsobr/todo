@@ -3,6 +3,7 @@
 use App\Http\Controllers\TaskListController;
 use App\Livewire\TaskListEdit;
 use App\Livewire\TaskListsIndex;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Redirect::to('login');
 });
 
 Route::middleware([

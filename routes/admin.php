@@ -33,7 +33,7 @@ Route::name('admin.')->namespace('admin.')->middleware('admin')->group(function(
     Route::namespace('Auth')->middleware('auth:admin')->group(function(){
 
 
-        Route::get('/dashboard', Dashboard::class)->name('dashboard');
+        // Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
 
         Route::get('/logout',function(){
