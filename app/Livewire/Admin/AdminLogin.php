@@ -23,21 +23,18 @@ class AdminLogin extends Component
             'password' => ['required', 'min:8'],
         ]);
 
-
         if (Auth::guard('admin')->attempt($credentials)) {
-            $this->session()->regenerate();
-            if ($this->session()->has('url.intended')) {
-                return redirect()->intended($this->session()->get('url.intended'));
+            session()->regenerate();
+
+            if (session()->has('url.intended')) {
+                return redirect()->intended(session()->get('url.intended'));
             }
-            dd('dashboard');
+
             return redirect()->route('admin.dashboard');
         } else {
             $this->addError('email', 'E-mail e/ou senha inválidos.');
             return;
         }
-
-
-        return ;
     }
 
 
