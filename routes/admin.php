@@ -1,13 +1,18 @@
 <?php
 
+use App\Livewire\Admin\AdminLogin;
+use App\Livewire\Admin\AdminLoginProcess;
+use App\Livewire\Admin\AdminRegister;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Redirect;
 Route::domain(adminUrl())->name('admin.')->group(function () {
-    Route::get('/www', function () {
-        return view('welcome');
-    });
+    Route::get('/', function () { return redirect('/login'); });
+    Route::get('/login', AdminLogin::class)->name('login');
+    Route::get('/register', AdminRegister::class)->name('register');
+    // Route::get('/login', AdminLoginProcess::class)->name('login.post');
+
 });
 /*
 |--------------------------------------------------------------------------
